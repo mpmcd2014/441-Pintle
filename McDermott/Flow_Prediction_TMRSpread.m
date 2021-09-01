@@ -6,9 +6,18 @@ PaPerPsi = 6894.75729;
 
 rho_air     = 1.184;
 
-%% SETUP
+%% INPUTS
+% Experimental Boundaries
 TMR     = (0.2:0.2:4)';
+NTest   = 10;
 massFlowFrac = 1;
+reuseFrac = 0.33;
+
+massSensitivity     = 0.020;    % kg. Lowest mass that can be measured.
+deltaMass           = 0.05;     % [-]. Fraction of the mass flow rate desired to be resolved.
+angSector           = 1/10;     % Angle sweep needed for a symmetric slice of the pintle (in the phi direction)
+
+Vavailable      = 0.20;         % m^3. Approximately 55 gallons of water.
 
 load('propellants2238.mat')
 load('geom2238.mat')
@@ -44,6 +53,8 @@ annulus.mu      = 1.002e-3;  % Dynamic Viscosity, kg m^-1 s^-1
 annulus.Pvap    = 2339;      % Pa. Vapor pressure, 300K
 annulus.sigma    = 0.0717;
 
+
+%% SETUP
 % Pressure and Mass Flow Properties
 varyPintle      = TMR < ((LOX.mDot*LOX.v)/(RP1.mDot*RP1.v));
 varyAnnulus     = ~varyPintle;
@@ -148,7 +159,15 @@ annulus.We  = annulus.rho*(annulus.v.^2)*d/annulus.sigma;
 annulus.rb  = 0.5*d*14.2*((rho_air/annulus.rho)^(-2/3))*(annulus.We.^(-1/3));
 
 %% INSTRUMENTATION REQUIREMENTS
+mDotTotal = pintle.mDot + annulus.mDot;
 
+tMin    = massSensitivity*(1/deltaMass)*(1/angSector)*(1/min(mDotTotal));
+
+N   = (annulus.rho*Vavailable)/mean(mDotTotal)/tMin;
+
+V_NOREUSE       = 3*sum(interp1(TMR,mDotTotal,(linspace(TMR(1),TMR(end),NTest))))*tMin/annulus.rho;
+V_REUSE         = (1-reuseFrac)*3*sum(interp1(TMR,mDotTotal,(linspace(TMR(1),TMR(end),NTest))))*tMin/annulus.rho;
+V_EXTRAREUSE    = (1-reuseFrac)*5*sum(interp1(TMR,mDotTotal,(linspace(TMR(1),TMR(end),NTest))))*tMin/annulus.rho;
 
 
 %% PLOTTING
