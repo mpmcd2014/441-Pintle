@@ -46,7 +46,7 @@ gravity.Fsense  = mDot*gravity.vf(3)*cosd(atand(gravity.vf(1)/gravity.vf(2)));
 gravity.Fmeas   = gravity.Fsense/cosd(gravity.thetaMeas);
 
 %% DROPLET WITH DRAG
-diameters   = [25e-6,50e-6,100e-6,250e-6,500e-6];
+diameters   = [60e-6,100e-6,150e-6,200e-6,250e-6,500e-6];
 drag = repmat(results,length(diameters),1);
 % FLOW PARAMETERS
 
@@ -71,6 +71,7 @@ end
 
 
 %% PLOT COMPARISON
+close all
 figure()
 hold on
 plot(linear.x,linear.y,'--k','LineWidth',1)
@@ -83,13 +84,31 @@ for n1 = 1:length(diameters)
     %scatter(drag(n1).x(devPoint),drag(n1).y(devPoint),'x','MarkerEdgeColor','r');
     names(end+1) = {[char(string(diameters(n1)*1e6)),' um']};
 end
+plotformat(gca())
 
 legend(names)
-a1 = gca();
-a1.FontName = 'Times New Roman';
-a1.FontSize = 14;
-xlabel(a1,'x [m]')
+xlabel('x [m]')
 
 figure()
 bar(categorical(names),[linear.Fmeas,gravity.Fmeas,drag(:).Fmeas])
-ylabel(a1,'y [m]')
+ylabel('y [m]')
+plotformat(gca())
+
+figure()
+hold on
+names = {'Injection Angle'};
+plot([0,.8],[60,60],'--k','LineWidth',1)
+for n1 = 1:length(diameters)
+    plot(drag(n1).x,atand(abs(drag(n1).v(:,1)./drag(n1).v(:,2))))
+    names(end+1) = {[char(string(diameters(n1)*1e6)),' um']};
+end
+plotformat(gca())
+ylabel('Droplet Path Angle [deg]')
+xlabel('Radial Position [m]')
+ylim([40,65])
+legend(names)
+
+function plotformat(a)
+a.FontName = 'Times New Roman';
+a.FontSize = 12;
+end

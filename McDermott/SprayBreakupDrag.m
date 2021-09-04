@@ -6,7 +6,7 @@ if nargin == 5
     dt = 0.001;
 end
 
-iterLim = 1e5;
+iterLim = 5e4;
 g = 9.807;                      % m/s^2
 
 % Ambient fluid selections
