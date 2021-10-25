@@ -50,17 +50,6 @@ end
     hold on
     plot(data.(fieldName).t,data.(fieldName).m)
     title(presVals(i))
-    
-    figure
-    hold on
-    plot(data.(fieldName).t, data.(fieldName).lc_1(start(i):stop(i)))
-    plot(data.(fieldName).t, data.(fieldName).lc_2(start(i):stop(i)))
-    plot(data.(fieldName).t, data.(fieldName).lc_3(start(i):stop(i)))
-    plot(data.(fieldName).t, data.(fieldName).lc_4(start(i):stop(i)))
-    legend('lc_1','lc_2','lc_3','lc_4')
-    title(presVals(i))
  end
 
-
-
-
+plot(data.psi150.t
