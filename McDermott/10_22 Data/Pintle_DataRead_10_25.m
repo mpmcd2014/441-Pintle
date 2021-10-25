@@ -9,26 +9,28 @@ rho = 998; % kg/m^3. Density of water at 70 deg F.
 % Pintle Geometry
 orif_d = 0.0625/39.37; % m. Orifice Diameter [in]
 n_orif = 20;
-% A = pi*(orif_d/2)^2*n_orif; % m^2. Pintle Flow area [in^2]
+A = pi*(orif_d/2)^2*n_orif; % m^2. Pintle Flow area [in^2]
 
 % Annulus Geometry
 ann_d = .767/39.37; % m
 pint_out_d = 0.742/39.37; % m
-A = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
+%A = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
 
 %% Read in Data
 %%some intializations
 
-filenamePrefix = "Data\Annulus\Annulus_10-22_";
+filenamePrefix = "Data\Pintle\Pintle_10-22_";
 filenameExtension = ".csv";
-presVals = ["100","125", "150" ,"175"];
+presVals = ["50","100", "125" ,"150"];
+nRuns = [3,1,3,1];
 data = struct();
 start = [8800, 9200, 11584, 14240];
 stop = [14500, 14000, 17941, 20679];
 for i = 1:length(presVals)
-    filename = filenamePrefix + presVals(i) + filenameExtension;
+    for n = 1:nRuns(i)  
+    filename = filenamePrefix + presVals(i) +"-"+ string(nRuns(i)) + filenameExtension;
     tmpData=csvread(filename,1,0);
-    fieldName = "psi" + presVals(i);
+    fieldName = "psi" + presVals(i) + "_" + string(nRuns(i));
     data.(fieldName).t = tmpData(:,1); % Time in seconds
     data.(fieldName).p = tmpData(:,7); % Pressure upstream of article in psi
     data.(fieldName).lc_1 = tmpData(:,16); % Load Cell (lbf)
@@ -37,11 +39,12 @@ for i = 1:length(presVals)
     data.(fieldName).lc_4 = tmpData(:,19);
     data.(fieldName).m = (data.(fieldName).lc_1 + data.(fieldName).lc_2 +data.(fieldName).lc_3 + data.(fieldName).lc_4); %lbf
     clear tmpData;
+    end
 end
 
  for i = 1:length(presVals)
 %Clean up Data
-    fieldName = "psi" + presVals(i);
+    fieldName = "psi" + presVals(i) + "_" + string(nRuns(i));
     data.(fieldName).t = data.(fieldName).t(start(i):stop(i));
     data.(fieldName).p = data.(fieldName).p(start(i):stop(i));
     data.(fieldName).m = data.(fieldName).m(start(i):stop(i));

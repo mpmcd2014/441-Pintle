@@ -9,12 +9,12 @@ rho = 998; % kg/m^3. Density of water at 70 deg F.
 % Pintle Geometry
 orif_d = 0.0625/39.37; % m. Orifice Diameter [in]
 n_orif = 20;
-% A = pi*(orif_d/2)^2*n_orif; % m^2. Pintle Flow area [in^2]
+A = pi*(orif_d/2)^2*n_orif; % m^2. Pintle Flow area [in^2]
 
 % Annulus Geometry
 ann_d = .767/39.37; % m
 pint_out_d = 0.742/39.37; % m
-A = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
+%A = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
 
 %% Read in Data
 %%some intializations
@@ -22,11 +22,14 @@ A = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
 filenamePrefix = "Data\Annulus\Annulus_10-22_";
 filenameExtension = ".csv";
 presVals = ["100","125", "150" ,"175"];
+nRuns = [3,1,3,1];
 data = struct();
 start = [8800, 9200, 11584, 14240];
 stop = [14500, 14000, 17941, 20679];
 for i = 1:length(presVals)
-    filename = filenamePrefix + presVals(i) + filenameExtension;
+    for n = 1:nRuns(i)
+        
+    filename = filenamePrefix + presVals(i) +"-"+ string(nRuns(i filenameExtension;
     tmpData=csvread(filename,1,0);
     fieldName = "psi" + presVals(i);
     data.(fieldName).t = tmpData(:,1); % Time in seconds
