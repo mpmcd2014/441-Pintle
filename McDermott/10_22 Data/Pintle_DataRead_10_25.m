@@ -61,6 +61,9 @@ end
         plot(data.(fieldName).t,data.(fieldName).m)
         title(fieldName)
         
+        % UNCERTAINTY CALCULATION
+        
+        
         figure
         hold on
         plot(data.(fieldName).t, data.(fieldName).lc_1(start{i}(n):stop{i}(n)))
@@ -71,5 +74,3 @@ end
         title(fieldName)
      end
  end
-
-
