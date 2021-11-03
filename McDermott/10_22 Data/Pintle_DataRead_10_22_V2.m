@@ -48,12 +48,12 @@ for n1 = 1:length(presVals)
 end
  %% Data Analysis
 summary = zeros(totRuns,4);
- UPRel = zeros(totRuns,1);
- mDotRel = zeros(totRuns,1);
- CdRel = zeros(totRuns,1);
- currRun = 1;
- for n1 = 1:length(presVals)
-     for n2 = 1:nRuns(n1)
+UPRel = zeros(totRuns,1);
+mDotRel = zeros(totRuns,1);
+CdRel = zeros(totRuns,1);
+currRun = 1;
+for n1 = 1:length(presVals)
+    for n2 = 1:nRuns(n1)
         %Clean up Data
         filename = filenamePrefix + presVals(n1) +"-"+ string(n2) + filenameExtension;
         fieldName = "psi" + presVals(n1) + "_" + string(n2);
@@ -91,5 +91,5 @@ summary = zeros(totRuns,4);
         mDotRel(currRun) = data.(fieldName).D.mDotRel;
         CdRel(currRun) = data.(fieldName).D.CdRel;
         currRun = currRun + 1;
-     end
- end
+    end
+end

@@ -8,6 +8,9 @@ if nargin == 2
 end
 
 L = length(t);
+if mod(L,2)
+    L = L-1;
+end
 Fs = round(L/(t(end) - t(1)));
 nSets = size(datasets,2);
 
