@@ -12,8 +12,8 @@ n_orif = 20;
 % A = pi*(orif_d/2)^2*n_orif; % m^2. Pintle Flow area [in^2]
 
 % Annulus Geometry
-ann_d = .767/39.37; % m
-pint_out_d = 0.742/39.37; % m
+ann_d = .766/39.37; % m
+pint_out_d = 0.7415/39.37; % m
 A = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
 
 %% Read in Data
@@ -28,7 +28,7 @@ start = [8800, 9200, 11584, 14240];
 stop = [14500, 14000, 17941, 20679];
 expandRange = 2000;
 
-freqThreshold = 0.2;        % Include frequencies that contribute more than 10% of amplitude.
+freqThreshold = 0.1;        % Include frequencies that contribute more than 10% of amplitude.
 Pvary       = 0.8;          % Fraction of maximum pressure through which pressure can vary during test.
 
 for n1 = 1:length(presVals)
@@ -63,7 +63,7 @@ for n1 = 1:length(presVals)
     maxInd = find((data.(fieldName).Psmooth-Pvary*max(data.(fieldName).Psmooth))>0,1,'last');
     
     %Calculate values
-    data.(fieldName).p_avg = mean(data.(fieldName).Psmooth(data.(fieldName).Psmooth > Pvary*max(data.(fieldName).Psmooth))); % Pa.
+    data.(fieldName).p_avg = mean(data.(fieldName).Psmooth(minInd:maxInd)); % Pa.
     [data.(fieldName).flowLine,data.(fieldName).S]= polyfit(data.(fieldName).t(minInd:maxInd),data.(fieldName).msmooth(minInd:maxInd),1);
     [~,data.(fieldName).delta] = polyval(data.(fieldName).flowLine,data.(fieldName).t(minInd:maxInd),data.(fieldName).S);
     %data.(fieldName).mDot = [data.(fieldName).flowLine(1) (data.(fieldName).msmooth(maxInd)-data.(fieldName).msmooth(minInd))/(data.(fieldName).t(maxInd)-data.(fieldName).t(minInd))*(1/2.205)]; % kg/s.

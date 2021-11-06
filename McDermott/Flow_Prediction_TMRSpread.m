@@ -8,10 +8,10 @@ rho_air     = 1.184;
 
 %% INPUTS
 % Experimental Boundaries
-TMR     = (0.5:0.5:2.0)';
+TMR     = [0.4,0.8,1.2,2.0,3]';
 binRange = 30;
 
-Pmax    = 200*PaPerPsi;
+Pmax    = 180*PaPerPsi;
 
 massSensitivity     = 0.020;    % kg. Lowest mass that can be measured.
 deltaMass           = 0.05;     % [-]. Fraction of the mass flow rate desired to be resolved.
@@ -85,5 +85,7 @@ pintle.v    = pintle.mDot/(pintle.rho*pintle.A);
 dPAnn   = (1/2)*annulus.rho*((annulus.v/annulus.Cd).^2);
 dPPintle= (1/2)*pintle.rho*((pintle.v/pintle.Cd).^2);
 thetaPred = @(T) 0.6243*atan(3.377*T);
+%thetaPred   = @(T) atan(T);
 angles =thetaPred(TMR)*(180/pi);
-summary = [TMR,dPAnn/PaPerPsi,dPPintle/PaPerPsi,angles,angles-binRange/2,angles+binRange/2];
+summary = [TMR,dPAnn/PaPerPsi,dPPintle/PaPerPsi,angles,angles-binRange/2,angles+binRange/2]
+%summary = [TMR,dPAnn,dPPintle,angles,angles-binRange/2,angles+binRange/2]
