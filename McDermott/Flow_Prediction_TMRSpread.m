@@ -8,10 +8,10 @@ rho_air     = 1.184;
 
 %% INPUTS
 % Experimental Boundaries
-TMR     = [0.4,0.8,1.2,2.0,3]';
+TMR     = [0.36,0.54,0.65,0.89,1.16]';
 binRange = 30;
 
-Pmax    = 180*PaPerPsi;
+Pmax    = 130*PaPerPsi;
 
 massSensitivity     = 0.020;    % kg. Lowest mass that can be measured.
 deltaMass           = 0.05;     % [-]. Fraction of the mass flow rate desired to be resolved.

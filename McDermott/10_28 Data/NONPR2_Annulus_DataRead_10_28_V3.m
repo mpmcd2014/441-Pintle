@@ -103,19 +103,23 @@ ni = find((data.(sample).Psmooth-Pvary*max(data.(sample).Psmooth))>0,1,'first');
 xi = find((data.(sample).Psmooth-Pvary*max(data.(sample).Psmooth))>0,1,'last');
 % Cleaned Signal
 figure
-plot(data.(sample).t-min(data.(sample).t),data.(sample).msmooth-min(data.(sample).msmooth),'LineWidth',1.5);
+extraPoints = 1000;
+plot(data.(sample).t(ni-3*extraPoints:xi+extraPoints)-(data.(sample).t(ni-3*extraPoints)),data.(sample).m(ni-3*extraPoints:xi+extraPoints)-min(data.(sample).msmooth),'LineWidth',.5);
 hold on
-tsample = [data.(sample).t(ni),data.(sample).t(xi)]-min(data.(sample).t);
-plot(tsample,polyval(data.(sample).flowLine,tsample+min(data.(sample).t))-min(data.(sample).msmooth),'LineWidth',1)
+tsample = [data.(sample).t(ni),data.(sample).t(xi)]-data.(sample).t(ni-3*extraPoints);
+%plot(tsample,polyval(data.(sample).flowLine,tsample+(data.(sample).t(ni)))-min(data.(sample).msmooth),'LineWidth',1.5)
+plot(tsample,polyval(data.(sample).flowLine,tsample+(data.(sample).t(ni-3*extraPoints)))-min(data.(sample).msmooth),'LineWidth',2.5);
 b = gca();
 b.FontName = 'Times New Roman';
 b.FontSize = 18;
 ylim(b,[0,ceil((max(data.(sample).msmooth)-min(data.(sample).msmooth)))]);
+xlim([data.(sample).t(ni-3*extraPoints) data.(sample).t(xi+extraPoints)]-data.(sample).t(ni-3*extraPoints))
 ylabel(b, 'Water Mass Flowed [kg]');
 xlabel(b, 'Time [s]');
-legend({'Cleaned Data','Best Fit Line'},'Location','northwest')
+legend({'Mass Collected','Best Fit Line'},'Location','northwest')
 
 % Original Data
+%{
 figure
 plot(data.(sample).t-min(data.(sample).t),data.(sample).m-data.(sample).m(1));
 a = gca();
@@ -125,7 +129,7 @@ ylim(a,[0,ceil((max(data.(sample).msmooth)-min(data.(sample).msmooth)))]);
 ylabel(a, 'Water Mass Flowed [kg]');
 xlabel(a, 'Time [s]');
 
-
+%}
 %% CUSTOM FUNCTIONS
 function formatPlot(ax)
 ax.FontName = 'Times New Roman';
