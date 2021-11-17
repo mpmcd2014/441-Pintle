@@ -8,10 +8,10 @@ rho_air     = 1.184;
 
 %% INPUTS
 % Experimental Boundaries
-TMR     = [0.36,0.54,0.65,0.89,1.16]';
+TMR     = [0.35,0.47,0.6,0.8,1.1]';
 binRange = 30;
 
-Pmax    = 130*PaPerPsi;
+Pmax    = 133*PaPerPsi;
 
 massSensitivity     = 0.020;    % kg. Lowest mass that can be measured.
 deltaMass           = 0.05;     % [-]. Fraction of the mass flow rate desired to be resolved.
@@ -28,9 +28,9 @@ L   = geom.tau_p;
 r   = d/10;
 
 % Annulus Properties
-d_ann   = 0.0125/inchPerMeter;
-L_ann   = 0.25/inchPerMeter;
-r_ann   = 0.1/inchPerMeter;
+ann_d = .766/39.37; % m
+pint_out_d = 0.7410/39.37; % m
+AAnn = pi*(ann_d/2)^2 - pi*(pint_out_d/2)^2; % m^2
 
 % Water Flow Fluid Properties
 pintle = LOX;
@@ -47,7 +47,7 @@ pintle.rho     = 998;       % Liquid density. kg m^-3
 pintle.mu      = 1.002e-3;  % Dynamic Viscosity, kg m^-1 s^-1
 pintle.Pvap    = 2339;      % Pa. Vapor pressure, 300K
 pintle.sigma    = 0.0717;   % N/m. Surface tension
-pintle.Cd       = 0.59;
+pintle.Cd       = 0.60;
 
 maxPintle = struct();
 maxPintle.mDot  = pintle.Cd*pintle.A*sqrt(2*pintle.rho*Pmax);
@@ -57,7 +57,8 @@ annulus.rho     = 998;       % Liquid density. kg m^-3
 annulus.mu      = 1.002e-3;  % Dynamic Viscosity, kg m^-1 s^-1
 annulus.Pvap    = 2339;      % Pa. Vapor pressure, 300K
 annulus.sigma    = 0.0717;
-annulus.Cd      = 0.56;
+annulus.Cd      = 0.57;
+annulus.A       = AAnn;
 
 maxAnnulus = struct();
 maxAnnulus.mDot = annulus.Cd*annulus.A*sqrt(2*annulus.rho*Pmax);

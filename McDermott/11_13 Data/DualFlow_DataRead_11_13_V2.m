@@ -42,7 +42,7 @@ data = struct();
 expandRange = 2000;
 
 freqThreshold = 0.1;        % Include frequencies that contribute more than 10% of amplitude.
-Pvary       = 0.9;          % Fraction of maximum pressure through which pressure can vary during test.
+Pvary       = 0.8;          % Fraction of maximum pressure through which pressure can vary during test.
 nTMR      = size(presVals,1);
 
 testNames = {};
