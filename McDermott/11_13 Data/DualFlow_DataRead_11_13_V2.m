@@ -73,6 +73,8 @@ summary(1,:) = {'tTest','TMR','Pt','P'};
 UPRel = zeros(nTMR,1);
 mDotRel = zeros(nTMR,1);
 CdRel = zeros(nTMR,1);
+
+mTestPred = zeros(length(testNames),1);
 for n1 = 1:length(testNames)
 %Clean up Data
     fieldName = testNames{n1};
@@ -146,6 +148,8 @@ for n1 = 1:length(testNames)
             end
         end
     end
+    
+    mTestPred(n1) = (1/10)*(trapz(data.(fieldName).t(dualFlow),data.(fieldName).res(1).mDot(dualFlow)) + trapz(data.(fieldName).t(dualFlow),data.(fieldName).res(2).mDot(dualFlow)));
     %{
     %Calculate values
     data.(fieldName).p_avg = mean(data.(fieldName).Psmooth(minInd:maxInd)); % Pa.

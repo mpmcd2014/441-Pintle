@@ -14,12 +14,13 @@ minSize     = 60;
 data     = struct();
 a = repmat(axes,length(pintles),1);
 for n1 = 1:length(pintles)
-    raw = xlsread(filename,pintles{n1},"A2:I25");
+    raw = xlsread(filename,pintles{n1},"A2:F27");
     data.(pintles(n1)).angles   = flip(raw(~isnan(raw(:,1)),1));
     data.(pintles(n1)).TMR      = raw(1,2:end);
     data.(pintles(n1)).TMR_H    = raw(2,2:end);
     data.(pintles(n1)).TMR_L    = raw(3,2:end);
-    data.(pintles(n1)).ms   = flip(raw(7:end,2:end));
+    data.(pintles(n1)).ms   = flip(raw(7:end-2,2:end));
+    data.(pintles(n1)).mExpect  = raw(end,2:end);
     
     % Plotting
     figure();
@@ -35,7 +36,13 @@ for n1 = 1:length(pintles)
         b = scatter(a(n1),repmat(data.(pintles(n1)).TMR(n2),1,6),data.(pintles(n1)).angles(binInd),sizeVec,colorVec,'filled','s');%,'s','MarkerEdgeColor','none');
         %data.(pintles(n1)).msPlot(:,plotInd) = data.(pintles(n1)).ms(:,n2);
         hold on
+        fprintf('|%9.2f%9s|',data.(pintles(n1)).TMR(n2),'')
     end
+    fprintf('\n');
+    for n2 = 1:length(data.(pintles(n1)).TMR)
+        fprintf('|%9.2f%9.2f|',data.(pintles(n1)).mExpect(n2),data.(pintles(n1)).totMass(n2));
+    end
+    fprintf('\n==================================================\n');
     %TMRLabel = string(TMRLabel);
 end
 
