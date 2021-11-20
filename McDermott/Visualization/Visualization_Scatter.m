@@ -7,14 +7,14 @@ clear; close all;
 %% READ DATA
 filename = "Data summary.xlsx";
 
-pintles     = ["HD0","HD0_5","HD1_0","HD2_0"];
-HDs         = [0,0.5,1.0,2.0];
+pintles     = ["HD0","HD0_5","HD1_0","HD1_5","HD2_0"];
+HDs         = [0,0.5,1.0,1.5,2.0];
 
 minSize     = 60;
 data     = struct();
 a = repmat(axes,length(pintles),1);
 for n1 = 1:length(pintles)
-    raw = xlsread(filename,pintles{n1},"A2:F27");
+    raw = xlsread(filename,pintles{n1},"A2:G27");
     data.(pintles(n1)).angles   = flip(raw(~isnan(raw(:,1)),1));
     data.(pintles(n1)).TMR      = raw(1,2:end);
     data.(pintles(n1)).TMR_H    = raw(2,2:end);
