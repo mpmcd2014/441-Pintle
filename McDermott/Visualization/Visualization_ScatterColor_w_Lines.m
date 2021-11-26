@@ -6,7 +6,7 @@ clear; close all;
 
 %% READ DATA
 filename    = "Data summary.xlsx";
-savePlots   = true;
+savePlots   = false;
 
 pintles     = ["HD0","HD0_5","HD1_0","HD1_5","HD2_0"];
 HDs         = [0,0.5,1.0,1.5,2.0];
@@ -22,12 +22,14 @@ scatColorMat    = [[1,0.6,0];[1,1,0];[0,1,0];[0,1,1];[0.35,0,1]];
 fprintf('%-10s%-5s%10s%10s%10s%10s\n','H/D','|','Centroid','','Peaks','')
 fprintf('%-10s%-5s%10s%10s%10s%10s\n','','|','m','b','m','b')
 for n1 = 1:length(pintles)
-    raw = xlsread(filename,pintles{n1},"A2:G27");
+    raw = xlsread(filename,pintles{n1},"A2:G28");
     data.(pintles(n1)).angles   = flip(raw(~isnan(raw(:,1)),1));
     data.(pintles(n1)).TMR      = raw(1,2:end);
     data.(pintles(n1)).TMR_H    = raw(2,2:end);
     data.(pintles(n1)).TMR_L    = raw(3,2:end);
-    data.(pintles(n1)).ms   = flip(raw(7:end-2,2:end));
+    data.(pintles(n1)).optical  = raw(5,2:end);
+    data.(pintles(n1)).Doptical = raw(6,2:end);
+    data.(pintles(n1)).ms   = flip(raw(8:end-2,2:end));
     data.(pintles(n1)).mExpect  = raw(end,2:end);
     
     % Plotting
@@ -68,6 +70,8 @@ for n1 = 1:length(pintles)
     end
     
     fprintf('%-10.1f%-5s%+10.3f%+10.3f%+10.3f%+10.3f\n',HDs(n1),'|',data.(pintles(n1)).centroidP(1),data.(pintles(n1)).centroidP(2),data.(pintles(n1)).peaksP(1),data.(pintles(n1)).peaksP(2))
+    
+    e(n1) = errorbar(data.(pintles(n1)).TMR,data.(pintles(n1)).optical,data.(pintles(n1)).Doptical);
 end
 
 %% FORMATTING AND I/O
@@ -79,6 +83,12 @@ for n1 = 1:length(a)
     xlabel(a(n1),'\itTMR')
     ylabel(a(n1),'$\theta$','Interpreter','latex')
     title(a(n1),"H/D = "+string(HDs(n1)))
+    
+    e(n1).Marker    = 'o';
+    e(n1).MarkerSize= 10;
+    e(n1).LineWidth = 1.5;
+    e(n1).LineStyle = 'none';
+    e(n1).MarkerFaceColor = [1,0,0];
 end
 
 if savePlots
